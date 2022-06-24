@@ -46,13 +46,12 @@ class TaskController extends Controller
         ]);
 
         $data = request()->all();
-
         $task = (new Task())
             ->setText($data['text']);
 
         $this->tasksManager->add($task);
 
-        return redirect('/')->with('success', 'Task added successfully!');;
+        return redirect('/')->with('success', 'Task added successfully!');
     }
 
     public function update(string $id)
@@ -62,14 +61,13 @@ class TaskController extends Controller
         ]);
 
         $data = request()->all();
-
         $task = ($this->tasksManager->get($id))
             ->setText($data['text'])
             ->setChecked((bool) ($data['checked'] ?? false));
 
         $this->tasksManager->update($task);
 
-        return redirect('/')->with('success', 'Task updated successfully!');;
+        return redirect('/')->with('success', 'Task updated successfully!');
     }
 
     public function delete(string $id)
@@ -78,6 +76,6 @@ class TaskController extends Controller
 
         $this->tasksManager->delete($task);
 
-        return redirect('/')->with('success', 'Task deleted successfully!');;
+        return redirect('/')->with('success', 'Task deleted successfully!');
     }
 }

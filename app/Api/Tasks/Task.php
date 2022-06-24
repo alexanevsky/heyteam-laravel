@@ -2,13 +2,15 @@
 
 namespace App\Api\Tasks;
 
+use DateTime;
+
 class Task
 {
     private string      $id;
     private string      $text = '';
     private bool        $checked = false;
-    private \DateTime   $createdAt;
-    private \DateTime   $updatedAt;
+    private DateTime    $createdAt;
+    private DateTime    $updatedAt;
 
     public function __construct(array $data = null)
     {
@@ -36,12 +38,12 @@ class Task
         return $this->checked;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -67,7 +69,7 @@ class Task
         return $this;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): self
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -76,12 +78,12 @@ class Task
 
     public function setCreatedAtFromTimestamp(int $timestamp): self
     {
-        $this->createdAt = new \DateTime('@' . intval($timestamp / 1000));
+        $this->createdAt = new DateTime('@' . (int) ($timestamp / 1000));
 
         return $this;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): self
+    public function setUpdatedAt(DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -90,7 +92,7 @@ class Task
 
     public function setUpdatedAtFromTimestamp(int $timestamp): self
     {
-        $this->updatedAt = new \DateTime('@' . intval($timestamp / 1000));
+        $this->updatedAt = new DateTime('@' . (int) ($timestamp / 1000));
 
         return $this;
     }

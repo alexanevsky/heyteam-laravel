@@ -14,24 +14,18 @@ class TaskManager
     public function all(): array
     {
         $response = Http::get(self::API_BASE_URL . '/todos')->json();
+        $tasks = array_map(fn($item) => new Task($item), $response);
 
-        $tasks = array_map(function ($item) {
-            return new Task($item);
-        }, $response);
+        usort($tasks, fn($a, $b) => $b->getCreatedAt() <=> $a->getCreatedAt());
 
-        usort($tasks, function($a, $b) {
-            return $b->getCreatedAt() <=> $a->getCreatedAt();
-        });
-
-        return array_values($tasks);
+        return $tasks;
     }
 
     public function get(string $id): Task
     {
         $response = Http::get(self::API_BASE_URL . '/todos/' . $id)->json();
-        $task = new Task($response);
 
-        return $task;
+        return new Task($response);
     }
 
     public function add(Task $task): void
@@ -39,12 +33,11 @@ class TaskManager
         $data = [
             'text' => $task->getText()
         ];
-
         $response = Http::post(self::API_BASE_URL . '/todos', $data);
-
-        $task->setId($response['id']);
-        $task->setCreatedAtFromTimestamp($response['createdAt']);
-        $task->setUpdatedAtFromTimestamp($response['updatedAt']);
+        $task
+            ->setId($response['id'])
+            ->setCreatedAtFromTimestamp($response['createdAt'])
+            ->setUpdatedAtFromTimestamp($response['updatedAt']);
 
     }
 
@@ -54,13 +47,11 @@ class TaskManager
             'text'      => $task->getText(),
             'checked'   => $task->getChecked()
         ];
-
         $response = Http::put(self::API_BASE_URL . '/todos/' . $task->getId(), $data);
-
         $task->setUpdatedAtFromTimestamp($response['updatedAt']);
     }
 
-    public function delete(Task $task)
+    public function delete(Task $task): void
     {
         Http::delete(self::API_BASE_URL . '/todos/' . $task->getId());
     }
