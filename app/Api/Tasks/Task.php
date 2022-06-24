@@ -14,11 +14,19 @@ class Task
 
     public function __construct(array $data = null)
     {
-        if (isset($data)) {
+        if (isset($data['id'])) {
             $this->setId($data['id']);
+        }
+        if (isset($data['text'])) {
             $this->setText($data['text']);
+        }
+        if (isset($data['checked'])) {
             $this->setChecked($data['checked']);
+        }
+        if (isset($data['createdAt'])) {
             $this->setCreatedAtFromTimestamp($data['createdAt']);
+        }
+        if (isset($data['updatedAt'])) {
             $this->setUpdatedAtFromTimestamp($data['updatedAt']);
         }
     }
